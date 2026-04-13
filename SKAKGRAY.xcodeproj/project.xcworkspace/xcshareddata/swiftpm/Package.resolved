@@ -1,0 +1,24 @@
+{
+  "originHash" : "9684a29d1853f40e88e99ad4d859bd3a198e357269b1f75966fcb92b1e460c73",
+  "pins" : [
+    {
+      "identity" : "appsflyerframework",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AppsFlyerSDK/AppsFlyerFramework",
+      "state" : {
+        "revision" : "d23b242b28c663618bce5fe9e2f3adb85b32bfb3",
+        "version" : "6.17.9"
+      }
+    },
+    {
+      "identity" : "devicekit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/devicekit/DeviceKit",
+      "state" : {
+        "revision" : "56b997e8a61707218f9af09f32b2a1d1806fd792",
+        "version" : "5.8.0"
+      }
+    }
+  ],
+  "version" : 3
+}
