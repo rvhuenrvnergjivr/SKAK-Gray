@@ -19,6 +19,9 @@ struct ProjectApp: App {
 
 class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     static var orientationLock = UIInterfaceOrientationMask.all
+    private var isTrackingFlowCompleted = false
+    private var hasReceivedAppsFlyerData = false
+    private var didStartLinkBuilder = false
     
     func application(_ application: UIApplication,
                      didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -78,11 +81,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         break
                     }
                     
-                    self.makeRequest()
+                    self.isTrackingFlowCompleted = true
+                    self.tryStartLinkBuilderIfReady()
                 }
             } else {
                 print("123 ATT недоступен, можно сразу использовать IDFA")
-                self.makeRequest()
+                self.isTrackingFlowCompleted = true
+                self.tryStartLinkBuilderIfReady()
             }
         }
 
@@ -92,6 +97,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         guard urlString == nil || (urlString ?? "").isEmpty else { return }
         
         let builder = LinkBuilderSKAKGRAY()
+    }
+    
+    private func tryStartLinkBuilderIfReady() {
+        guard isTrackingFlowCompleted, hasReceivedAppsFlyerData, !didStartLinkBuilder else { return }
+        didStartLinkBuilder = true
+        makeRequest()
     }
 }
 
@@ -103,6 +114,9 @@ extension AppDelegate: AppsFlyerLibDelegate {
         if let afattr = getAFAttr(from: conversionInfo) {
             UserDefaults.standard.set(afattr, forKey: "AFAttr")
         }
+        
+        hasReceivedAppsFlyerData = true
+        tryStartLinkBuilderIfReady()
     }
 
     func onConversionDataFail(_ error: Error) {
@@ -111,6 +125,9 @@ extension AppDelegate: AppsFlyerLibDelegate {
         #if DEBUG
         UserDefaults.standard.set("example", forKey: "AFAttr")
         #endif
+        
+        hasReceivedAppsFlyerData = true
+        tryStartLinkBuilderIfReady()
     }
 }
 
