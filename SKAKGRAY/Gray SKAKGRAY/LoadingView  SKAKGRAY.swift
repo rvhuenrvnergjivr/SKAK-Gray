@@ -11,8 +11,7 @@ struct LoadingViewSKAKGRAY: View {
     var body: some View {
         ZStack {
             Group {
-                Rectangle()
-                    .foregroundStyle(.blue)
+                // Main content
             }
             
             if urlString != "error" && urlString != "" {
